@@ -39,6 +39,18 @@ if [[ $(stat -c %a ${KEYSTONE_LOG_DIR}) != "755" ]]; then
     chmod 755 ${KEYSTONE_LOG_DIR}
 fi
 
+# Create log dir for Keystone logs
+SHIBD_LOG_DIR="/var/log/kolla/shibboleth"
+if [[ ! -d "${SHIBD_LOG_DIR}" ]]; then
+    mkdir -p ${SHIBD_LOG_DIR}
+fi
+if [[ $(stat -c %U:%G ${SHIBD_LOG_DIR}) != "_shibd:kolla" ]]; then
+    chown _shibd:kolla ${SHIBD_LOG_DIR}
+fi
+if [[ $(stat -c %a ${SHIBD_LOG_DIR}) != "755" ]]; then
+    chmod 755 ${SHIBD_LOG_DIR}
+fi
+
 # Upgrade and exit if KOLLA_UPGRADE variable is set. This catches all cases
 # of the KOLLA_UPGRADE variable being set, including empty.
 if [[ "${!KOLLA_UPGRADE[@]}" ]]; then

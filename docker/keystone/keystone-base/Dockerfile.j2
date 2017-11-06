@@ -30,6 +30,7 @@ RUN mkdir -p /var/www/cgi-bin/keystone \
             'apache2',
             'keystone',
             'libapache2-mod-wsgi',
+            'libapache2-mod-shib2',
             'python-ldappool'
         ] %}
 
@@ -57,6 +58,7 @@ RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf \
         {% set keystone_base_packages = [
             'apache2',
             'libapache2-mod-wsgi',
+            'libapache2-mod-shib2',
             'python-ldappool'
         ] %}
 {{ macros.install_packages(keystone_base_packages | customizable("packages")) }}

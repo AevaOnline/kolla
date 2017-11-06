@@ -29,7 +29,8 @@ RUN sed -i -r 's,^(Listen 80),#\1,' /etc/httpd/conf/httpd.conf \
             'gnocchi-common',
             'libapache2-mod-wsgi',
             'python-ldappool',
-            'python-rados'
+            'python-rados',
+            'librados-dev'
         ] %}
 
 {{ macros.install_packages(gnocchi_base_packages | customizable("packages")) }}
@@ -67,7 +68,8 @@ RUN mkdir -p /var/www/cgi-bin/gnocchi \
             'apache2',
             'libapache2-mod-wsgi',
             'python-ldappool',
-            'python-rados'
+            'python-rados',
+            'librados-dev'
         ] %}
 
         # on x86-64 pip grabs precompiled numpy/scipy - on aarch64/ppc64le
@@ -88,6 +90,7 @@ ADD gnocchi-base-archive /gnocchi-base-source
 
 {% set gnocchi_base_pip_packages = [
     'gnocchiclient',
+    'cradox',
     '/gnocchi[keystone,mysql,file,ceph]'
 ] %}
 
