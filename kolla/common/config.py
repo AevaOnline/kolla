@@ -554,6 +554,14 @@ SOURCES = {
         'type': 'url',
         'location': ('$tarballs_base/neutron-vpnaas/'
                      'neutron-vpnaas-master.tar.gz')},
+    'neutron-server-plugin-l2gw': {
+        'type': 'git',
+        'localtion': ('https://github.com/openstack/'
+                      'networking-l2gw.git')},
+    'neutron-l2gw-agent': {
+        'type': 'git',
+        'localtion': ('https://github.com/openstack/'
+                      'networking-l2gw.git')},
     'neutron-vpnaas-agent': {
         'type': 'url',
         'location': ('$tarballs_base/neutron-vpnaas/'

@@ -1,0 +1,36 @@
+FROM {{ namespace }}/{{ image_prefix }}neutron-base:{{ tag }}
+LABEL maintainer="{{ maintainer }}" name="{{ image_name }}" build-date="{{ build_date }}"
+
+{% block neutron_l2gw_agent_header %}{% endblock %}
+
+{% import "macros.j2" as macros with context %}
+
+{% if install_type == 'binary' %}
+    {% if base_distro in ['debian', 'ubuntu'] %}
+
+        {% set neutron_l2gw_agent_packages = [
+            'python-networking-l2gw'
+        ] %}
+
+    {% elif install_type == 'source' %}
+
+    ADD neutron-l2gw-agent-archive /neutron-l2gw-agent-source
+
+    {% set neutron_l2gw_agent_pip_packages = [
+        '/neutron_l2gw'
+    ] %}
+
+    RUN ln -s neutron-l2gw-agent-source/* neutron_l2gw \
+        && {{ macros.install_pip(neutron_l2gw_agent_pip_packages | customizable("pip_packages")) }} \
+        && cp /neutron_l2gw/etc/neutron/rootwrap.d/* /etc/neutron/rootwrap.d \
+        && sed -i 's|^exec_dirs.*|exec_dirs=/var/lib/kolla/venv/bin,/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin|g' /etc/neutron/rootwrap.conf
+
+    {% endif %}
+{% endif %}
+
+{{ macros.install_packages(neutron_l2gw_agent_packages | customizable("packages")) }}
+
+{% block neutron_l2gw_agent_footer %}{% endblock %}
+{% block footer %}{% endblock %}
+
+USER neutron
